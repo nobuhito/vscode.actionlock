@@ -21,9 +21,9 @@ This extension contributes the following settings:
 
 ## Release Notes
 
-### 1.0.0 Unreleased
+### 1.0.0 
 
-Initial release of ...
+Initial release of ActionLock.
 
 ### LICENSE
 
