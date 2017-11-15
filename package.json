@@ -1,0 +1,84 @@
+{
+    "name": "actionlock",
+    "displayName": "ActionLock",
+    "description": "ActionLock is a magical command inspired from [Howm](https://www.emacswiki.org/emacs/HowmMode).",
+    "version": "0.0.7",
+    "author": {
+        "name": "Nobuhito SATO",
+        "email": "nobuhito.sato@gmail.com",
+        "url": "https://bulkus.net/"
+    },
+    "publisher": "nobuhito",
+    "engines": {
+        "vscode": "^1.18.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "repository": {
+        "url": "https://github.com/nobuhito/vscode.actionlock"
+    },
+    "activationEvents": [
+        "onLanguage:markdown",
+        "onCommand:extension.doAction"
+    ],
+    "license": "SEE LICENSE IN LICENSE",
+    "icon": "icon.png",
+    "main": "./src/extension",
+    "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "ActionLock configuration",
+            "properties": {
+                "actionlock.underlineColor": {
+                    "type": "string",
+                    "default": "#5b7e91",
+                    "description": "Underline color of the character that ActionLock fires (default color is 舛花色)"
+                },
+                "actionlock.switchWords": {
+                    "type": "array",
+                    "default": [
+                        [
+                            "🚀 Rocket",
+                            "😺 Cat",
+                            "🐶 Dog"
+                        ],
+                        [
+                            "true",
+                            "false"
+                        ]
+                    ],
+                    "description": "ActionLock switch words"
+                }
+            }
+        },
+        "keybindings": [
+            {
+                "command": "extension.doAction",
+                "key": "Enter",
+                "when": "actionlock.isTrue"
+            }
+        ],
+        "commands": [
+            {
+                "command": "extension.doAction",
+                "title": "Execute ActionLock"
+            }
+        ]
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^7.0.0",
+        "eslint": "^4.11.0",
+        "mocha": "^3.5.0",
+        "typescript": "^2.5.2",
+        "vscode": "^1.1.5"
+    },
+    "dependencies": {
+        "moment": "^2.19.2"
+    }
+}
