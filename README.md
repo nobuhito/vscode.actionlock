@@ -1,6 +1,8 @@
-# ActionLock - Extension for VS Code
+# [ActionLock - Extension for VS Code](https://marketplace.visualstudio.com/items?itemName=nobuhito.actionlock#overview)
 
 ActionLock is a magical command inspired from [Howm](https://www.emacswiki.org/emacs/HowmMode).
+
+![icon](https://raw.githubusercontent.com/nobuhito/vscode.actionlock/master/icon.png)
 
 ## Features
 
