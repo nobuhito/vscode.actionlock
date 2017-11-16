@@ -133,7 +133,7 @@ function showQuickPick() {
     days[moment().add(60, "day").format("YYYY-MM-DD")] = ["+2month", "+60day"];
     days[moment().add(90, "day").format("YYYY-MM-DD")] = ["+3month", "+90day"];
     days[moment().add(180, "day").format("YYYY-MM-DD")] = ["+6month", "+180day"];
-    days[moment().add(360, "day").format("YYYY-MM-DD")] = ["NextYear", "+1year", "+12month", "+360day"];
+    days[moment().add(360, "day").format("YYYY-MM-DD")] = ["NextYear", "+1year", "+12month", "+365day"];
 
     for (var i = 1; i < 10; i++) {
         let _cd = moment().add(i, "day");
