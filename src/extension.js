@@ -125,7 +125,7 @@ function getIndentVal(line) {
 
 function showQuickPick() {
     var days = {};
-    days[moment().format("YYYY-MM-DD")] = ["Today"];
+    days[moment().format("YYYY-MM-DD")] = ["Today ."];
     days[moment().add(1, "day").format("YYYY-MM-DD")] = ["Tomorrow"];
     days[moment().add(7, "day").format("YYYY-MM-DD")] = ["NextWeek"];
     days[moment().add(14, "day").format("YYYY-MM-DD")] = ["+2week", "+14day"];
