@@ -23,13 +23,11 @@ This extension contributes the following settings:
 
 ## Release Notes
 
-### 1.0.0 
-
-Initial release of ActionLock.
+[Changelog](https://github.com/nobuhito/vscode.actionlock/blob/master/CHANGELOG.md)
 
 ### LICENSE
 
-MIT
+[MIT](https://github.com/nobuhito/vscode.actionlock/blob/master/LICENSE)
 
 ### Author
 
