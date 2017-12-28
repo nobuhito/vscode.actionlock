@@ -7,18 +7,31 @@ suite("Extension Tests", function () {
     let lines = `
 # test
 
-- [ ] test 2017-11-27
-- [ ] test1
-  - [x] test2
-  - [ ] test3
-    - [ ] test4
-        `.trim().split(/\r?\n/);
+- [ ] test 2017-11-27 2
+- [ ] test            3
+  - [x] test          4
+  - [ ] test          5
+    - [ ] test        6
+- [x] test            7
+  - test              8
+    - [ ] test        9
+    - [x] test       10
+    - [x] test       11
+  - [x] test         12
+  - [ ] test         13
+    - test           14
+  - [x] test         15
+    - [ ] test       16
+      - [ ] test     17
+    - [ ] test       18
+      - [ ] test     19
+`.trim().split(/\r?\n/);
 
     let ac = new ActionLock(true);
 
     test("Count Ranges", () => {
         ac.makeRanges(lines);
-        assert.deepEqual(6, ac.ranges.length);
+        assert.deepEqual(17, ac.ranges.length);
 
         let notInstalledMDTasks = new ActionLock(false);
         notInstalledMDTasks.makeRanges(lines);
@@ -104,7 +117,17 @@ suite("Extension Tests", function () {
                 exp: ["[x]", "[x]", "[x]"],
                 actRange: new vscode.Range(new vscode.Position(6, 6), new vscode.Position(6, 9)),
                 actDist: "[x]"
-            }
+            },
+            {
+                exp: ["[ ]", "[ ]"],
+                actRange: new vscode.Range(new vscode.Position(15, 4), new vscode.Position(15, 7)),
+                actDist: "[ ]"
+            },
+            {
+                exp: ["[x]"],
+                actRange: new vscode.Range(new vscode.Position(9, 6), new vscode.Position(9, 9)),
+                actDist: "[x]"
+            },
         ];
 
         for (const test of tests) {

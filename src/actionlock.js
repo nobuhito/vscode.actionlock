@@ -155,9 +155,13 @@ module.exports = class ActionLock {
             let _indent = getIndentLevel(line);
 
             // is parent?
-            if (/^\s*\-?\s?\[[\sx]\]\s/.test(line) && currentIndentLevel > _indent) {
-                parentRow = i;
-                break;
+            if (currentIndentLevel > _indent) {
+                if (/^\s*\-?\s?\[[\sx]\]\s/.test(line)) {
+                    parentRow = i;
+                    break;
+                } else {
+                    return edits;
+                }
             }
         }
 
@@ -171,8 +175,11 @@ module.exports = class ActionLock {
         for (let i = firstChildRow; i < lines.length; i++) {
             let line = lines[i];
 
-            if (childIndentLevel != getIndentLevel(line)) {
+            if (childIndentLevel > getIndentLevel(line)) {
                 break;
+            }
+            if (childIndentLevel < getIndentLevel(line)) {
+                continue;
             }
 
             if (row == i) {
