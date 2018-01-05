@@ -163,6 +163,8 @@ module.exports = class ActionLock {
 
             let child = edits.filter(d => { return d.range.start.line == i; });
             if (child.length > 0 && child[0].dist == "[x]") {
+            } else if (child.length > 0 && child[0].dist == "[ ]") {
+                return false;
             } else if (/^\s*\-?\s?\[\s\]\s/.test(line)) {
                 return false;
             }

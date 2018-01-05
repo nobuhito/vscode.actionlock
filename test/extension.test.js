@@ -29,13 +29,17 @@ suite("Extension Tests", function () {
   - [ ] test         21
     - [ ] test       22
     - [ ] test       23
+- [x] test           24
+  - [x] test         25
+    - [x] test       26
+    - [x] test       27
 `.trim().split(/\r?\n/);
 
     let ac = new ActionLock(true);
 
     test("Count Ranges", () => {
         ac.makeRanges(lines);
-        assert.deepEqual(21, ac.ranges.length);
+        assert.deepEqual(25, ac.ranges.length);
 
         let notInstalledMDTasks = new ActionLock(false);
         notInstalledMDTasks.makeRanges(lines);
@@ -136,6 +140,11 @@ suite("Extension Tests", function () {
                 exp: ["[x]", "[ ]", "[ ]"],
                 actRange: new vscode.Range(new vscode.Position(22, 6), new vscode.Position(22, 9)),
                 actDist: "[x]"
+            },
+            {
+                exp: ["[ ]", "[ ]", "[ ]"],
+                actRange: new vscode.Range(new vscode.Position(27, 6), new vscode.Position(27, 9)),
+                actDist: "[ ]"
             },
         ];
 
