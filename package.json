@@ -2,7 +2,7 @@
     "name": "actionlock",
     "displayName": "ActionLock",
     "description": "ActionLock is a magical command inspired from [Howm](https://www.emacswiki.org/emacs/HowmMode).",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "author": {
         "name": "Nobuhito SATO",
         "email": "nobuhito.sato@gmail.com",
