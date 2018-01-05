@@ -20,7 +20,8 @@
     },
     "activationEvents": [
         "onLanguage:markdown",
-        "onCommand:extension.doAction"
+        "onCommand:extension.doAction",
+        "onCommand:extension.toggleTask"
     ],
     "license": "SEE LICENSE IN LICENSE",
     "icon": "icon.png",
@@ -63,6 +64,11 @@
             {
                 "command": "extension.doAction",
                 "title": "Execute ActionLock"
+            },
+            {
+                "command": "extension.toggleTask",
+                "title": "Toggle task for mdtasks",
+                "when": "actionlock.isInstalledMDTasks"
             }
         ]
     },

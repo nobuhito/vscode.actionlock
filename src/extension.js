@@ -1,5 +1,6 @@
 const vscode = require('vscode');
 const ActionLock = require("./actionlock")
+const moment = require("moment");
 
 var decorationTypes = [];
 
@@ -10,6 +11,14 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerTextEditorCommand("extension.doAction", editor => {
         doAction(ac, editor);
     }));
+
+    vscode.commands.executeCommand("setContext", "actionlock.isInstalledMDTasks", false);
+    if (isInstalledMdtasks) {
+        vscode.commands.executeCommand("setContext", "actionlock.isInstalledMDTasks", true);
+        context.subscriptions.push(vscode.commands.registerTextEditorCommand("extension.toggleTask", editor => {
+            toggleTask(ac, editor);
+        }));
+    }
 
     var select = vscode.window.onDidChangeTextEditorSelection((event) => {
         triggerUpdate(event.textEditor);
@@ -45,6 +54,31 @@ exports.activate = activate;
 function deactivate() {
 }
 exports.deactivate = deactivate;
+
+function toggleTask(ac, editor) {
+    let line = editor.selection.start.line;
+    let ranges = ac.ranges.sort((a, b) => {
+        if (a.start.line > b.start.line) {
+            return 1;
+        } else if (a.start.line < b.start.line) {
+            return -1;
+        } else {
+            return (a.start.caracter > b.start.caracter) ? -1 : 1;
+        }
+    });
+
+    let filteredRange = ranges.filter(d => { return d.start.line == line; });
+    if (filteredRange.length == 0) {
+        return;
+    }
+
+    let p = new vscode.Position(
+        filteredRange[0].start.line,
+        filteredRange[0].start.character + 1
+    );
+    editor.selection = new vscode.Selection(p, p);
+    doAction(ac, editor);
+}
 
 function updateDecorations(ActionLock, editor) {
     for (const decorationType of decorationTypes) {
@@ -82,9 +116,23 @@ function doAction(ac, editor) {
                 break;
             }
         }
+
         editor.edit(edit => {
             for (const e of edits) {
                 edit.replace(e.range, e.dist);
+            }
+        }).then(() => {
+            if (ac.isInstalledMdtasks) {
+                let lineAt = editor.document.lineAt(range.start.line);
+
+                let doneDateReg = /\s\->\s\d{4}\-\d{2}\-\d{2}/;
+                let newText = (doneDateReg.test(lineAt.text)) ?
+                    lineAt.text.replace(doneDateReg, "") :
+                    lineAt.text + " -> " + moment().format("YYYY-MM-DD");
+
+                editor.edit(edit => {
+                    edit.replace(lineAt.range, newText);
+                });
             }
         });
     }
