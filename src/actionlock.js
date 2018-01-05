@@ -135,76 +135,60 @@ module.exports = class ActionLock {
     }
 
     // for MDTasks
-    checkParentTasks(edits, lines) {
-        let toggleCheck = function (check) {
-            return (check == "[x]") ? "[ ]" : "[x]";
-        };
+    indentLevel(line) {
+        return (/^(\s+)/.test(line)) ? RegExp.$1.length : 0;
+    }
 
-        let getIndentLevel = function (line) {
-            return (/^(\s+)/.test(line)) ? RegExp.$1.length : 0;
-        };
-
-        let changeWord = toggleCheck(edits[0].dist);
-        let row = edits[edits.length - 1].range.start.line;
-
-        let currentIndentLevel = getIndentLevel(lines[row]);
-        let parentRow = null;
-
-        for (let i = row; i >= 0; i--) {
-            let line = lines[i];
-            let _indent = getIndentLevel(line);
-
-            // is parent?
-            if (currentIndentLevel > _indent) {
-                if (/^\s*\-?\s?\[[\sx]\]\s/.test(line)) {
-                    parentRow = i;
-                    break;
-                } else {
-                    return edits;
-                }
+    findParentTasks(lines, startRow) {
+        let currentIndentLevel = this.indentLevel(lines[startRow]);
+        for (let i = startRow; i >= 0; i--) {
+            if (currentIndentLevel > this.indentLevel(lines[i])) {
+                return i;
             }
         }
+        return -1;
+    }
 
-        if (parentRow == null) {
-            return edits;
-        }
-
-        let isParentCheck = true;
+    isChildTasksAllDone(edits, lines, parentRow) {
         let firstChildRow = parentRow + 1;
-        let childIndentLevel = getIndentLevel(lines[firstChildRow]);
+        let childIndentLevel = this.indentLevel(lines[firstChildRow]);
         for (let i = firstChildRow; i < lines.length; i++) {
             let line = lines[i];
-
-            if (childIndentLevel > getIndentLevel(line)) {
+            if (childIndentLevel > this.indentLevel(line)) {
                 break;
             }
-            if (childIndentLevel < getIndentLevel(line)) {
+            if (childIndentLevel < this.indentLevel(line)) {
                 continue;
             }
 
-            if (row == i) {
-                if (changeWord == "[x]") { // 変更前の値が `[x]` の場合は親もfalse
-                    isParentCheck = false;
-                    break;
-                }
-            }
-
-            // 変更した行以外をチェック
-            else if (/^\s*\-?\s?\[[\s]\]\s/.test(line)) {
-                isParentCheck = false;
-                break;
+            let child = edits.filter(d => { return d.range.start.line == i; });
+            if (child.length > 0 && child[0].dist == "[x]") {
+            } else if (/^\s*\-?\s?\[\s\]\s/.test(line)) {
+                return false;
             }
         }
+        return true;
+    }
+
+    checkParentTasks(edits, lines) {
+        let row = edits[edits.length - 1].range.start.line;
+
+        let parentRow = this.findParentTasks(lines, row);
+        if (parentRow == -1) {
+            return edits;
+        }
+
+        let parentDone = this.isChildTasksAllDone(edits, lines, parentRow);
 
         this.makeRanges(lines);
         let range = this.ranges.filter((d) => { return d.start.line == parentRow; });
         let dist = "";
         if (range.length != 0) {
-            dist = (isParentCheck) ? "[x]" : "[ ]";
+            dist = (parentDone) ? "[x]" : "[ ]";
             edits.push({ range: range[0], dist: dist });
         }
 
-        if (parentRow != null && dist != "" && getIndentLevel(lines[parentRow]) != 0) {
+        if (parentRow != null && dist != "" && this.indentLevel(lines[parentRow]) != 0) {
             return this.checkParentTasks(edits, lines);
         }
 
