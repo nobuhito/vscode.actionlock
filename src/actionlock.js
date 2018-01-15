@@ -197,5 +197,27 @@ module.exports = class ActionLock {
         return edits;
     }
 
+    findCheckboxAtCursorLine(line) {
+        let ranges = this.ranges.sort((a, b) => {
+            if (a.start.line > b.start.line) {
+                return 1;
+            } else if (a.start.line < b.start.line) {
+                return -1;
+            } else {
+                return (a.start.character > b.start.character) ? 1 : -1;
+            }
+        });
+
+        let filteredRange = ranges.filter(d => { return d.start.line == line; });
+        if (filteredRange.length == 0) {
+            return;
+        }
+
+        let position = new vscode.Position(
+            filteredRange[0].start.line,
+            filteredRange[0].start.character + 1
+        );
+        return position;
+    }
 
 };

@@ -57,26 +57,9 @@ exports.deactivate = deactivate;
 
 function toggleTask(ac, editor) {
     let line = editor.selection.start.line;
-    let ranges = ac.ranges.sort((a, b) => {
-        if (a.start.line > b.start.line) {
-            return 1;
-        } else if (a.start.line < b.start.line) {
-            return -1;
-        } else {
-            return (a.start.caracter > b.start.caracter) ? -1 : 1;
-        }
-    });
+    let position = ac.findCheckboxAtCursorLine(line);
 
-    let filteredRange = ranges.filter(d => { return d.start.line == line; });
-    if (filteredRange.length == 0) {
-        return;
-    }
-
-    let p = new vscode.Position(
-        filteredRange[0].start.line,
-        filteredRange[0].start.character + 1
-    );
-    editor.selection = new vscode.Selection(p, p);
+    editor.selection = new vscode.Selection(position, position);
     doAction(ac, editor);
 }
 
