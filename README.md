@@ -1,3 +1,10 @@
+![version](https://vsmarketplacebadge.apphb.com/version-short/nobuhito.actionlock.svg)
+![installs](https://vsmarketplacebadge.apphb.com/installs-short/nobuhito.actionlock.svg)
+![rating](https://vsmarketplacebadge.apphb.com/rating-short/nobuhito.actionlock.svg)
+![trendDaily](https://vsmarketplacebadge.apphb.com/trending-daily/nobuhito.actionlock.svg)
+![trendWeekly](https://vsmarketplacebadge.apphb.com/trending-weekly/nobuhito.actionlock.svg)
+![trandMonthly](https://vsmarketplacebadge.apphb.com/trending-monthly/nobuhito.actionlock.svg)
+
 # [ActionLock - Extension for VS Code](https://marketplace.visualstudio.com/items?itemName=nobuhito.actionlock#overview)
 
 ActionLock is a magical command inspired from [Howm](https://www.emacswiki.org/emacs/HowmMode).
