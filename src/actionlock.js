@@ -108,7 +108,7 @@ module.exports = class ActionLock {
         days[moment().add(180, "day").format("YYYY-MM-DD")] = ["+6month", "+180day"];
         days[moment().add(360, "day").format("YYYY-MM-DD")] = ["NextYear", "+1year", "+12month", "+365day"];
 
-        for (var i = 1; i < 10; i++) {
+        for (var i = 1; i < 90; i++) {
             let _cd = moment().add(i, "day");
             let cd = _cd.format("YYYY-MM-DD");
 
